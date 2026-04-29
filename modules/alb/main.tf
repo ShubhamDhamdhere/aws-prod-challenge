@@ -1,11 +1,14 @@
-# ALB
+variable "vpc_id" {}
+variable "public_subnets" {}
+variable "alb_sg" {}
+
 resource "aws_lb" "alb" {
+  name               = "prod-alb"
   load_balancer_type = "application"
   subnets            = var.public_subnets
-  security_groups    = [aws_security_group.alb_sg.id]
+  security_groups    = [var.alb_sg]
 }
 
-# Target Group
 resource "aws_lb_target_group" "tg" {
   port     = 80
   protocol = "HTTP"
@@ -13,18 +16,26 @@ resource "aws_lb_target_group" "tg" {
 
   health_check {
     path = "/"
-    matcher = "200"
-    interval = 30
   }
 }
 
-# Listener
-resource "aws_lb_listener" "listener" {
+resource "aws_lb_listener" "https" {
   load_balancer_arn = aws_lb.alb.arn
-  port = 80
+  port              = 443
+  protocol          = "HTTPS"
+  ssl_policy        = "ELBSecurityPolicy-2016-08"
+  certificate_arn   = "REPLACE_WITH_ACM"
 
   default_action {
-    type = "forward"
+    type             = "forward"
     target_group_arn = aws_lb_target_group.tg.arn
   }
+}
+
+output "target_group_arn" {
+  value = aws_lb_target_group.tg.arn
+}
+
+output "alb_dns" {
+  value = aws_lb.alb.dns_name
 }

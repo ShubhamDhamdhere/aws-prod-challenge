@@ -268,3 +268,6 @@ resource "aws_cloudwatch_metric_alarm" "unhealthy_instance" {
   alarm_description   = "Alarm when ALB detects unhealthy targets"
   dimensions = {
     TargetGroup  = aws_lb_target_group
+    LoadBalancer = module.alb.alb_name
+  }
+}

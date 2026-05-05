@@ -16,7 +16,7 @@ variable "private_subnets" {
 
 variable "certificate_arn" {
   description = "ARN of ACM SSL certificate"
-}
+
 
 variable "budget_amount" {
   default = "50"

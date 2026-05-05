@@ -1,16 +1,15 @@
+output "ec2_public_ip" {
+  description = "Public IP of the EC2 instance"
+  value       = aws_instance.web.public_ip
+}
+
 output "vpc_id" {
-  value = module.vpc.vpc_id
+  description = "ID of the VPC"
+  value       = aws_vpc.main.id
 }
 
-output "alb_dns_name" {
-  value = module.alb.alb_dns_name
-}
-
-output "asg_name" {
-  value = module.asg.asg_name
-}
-
-output "instance_id" {
-  value = aws_instance.my_server.id
+output "lb_dns_name" {
+  description = "DNS name of the load balancer"
+  value       = aws_lb.app.dns_name
 }
 

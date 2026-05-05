@@ -10,3 +10,7 @@ output "asg_name" {
   value = module.asg.asg_name
 }
 
+output "instance_id" {
+  value = aws_instance.my_server.id
+}
+
